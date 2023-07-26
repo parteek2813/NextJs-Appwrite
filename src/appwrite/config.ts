@@ -52,11 +52,30 @@ export class AppwriteService {
   async isLoggedIn(): Promise<boolean> {
     try {
       const data = await this.getCurrentUser();
+      return Boolean(data); // if data present , return true else false
     } catch (error: any) {}
     return false;
   }
 
-  async getCurrentUser() {}
+  async getCurrentUser() {
+    try {
+      return account.get();
+    } catch (error: any) {
+      console.log("getcurrentUser error: " + error);
+    }
 
-  async logout() {}
+    return null;
+  }
+
+  async logout() {
+    try {
+      return await account.deleteSession("current");
+    } catch (error) {
+      console.log("logout error: " + error);
+    }
+  }
 }
+
+const appwriteService = new AppwriteService();
+
+export default appwriteService;
